@@ -1,0 +1,11 @@
+build
+out
+.cache
+.idea
+.vs
+.vscode
+
+.clangd
+
+# I have a folder of test roms in my workspace, but these are not needed in the repository
+roms
