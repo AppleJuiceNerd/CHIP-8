@@ -31,13 +31,3 @@ const array<std::uint8_t, 8> bitmask = {
 	0b0000'0010, // represents bit 1
 	0b0000'0001  // represents bit 1
 };
-
-
-// https://anonymousoverflow.privacyredirect.com/questions/19152178/printing-an-stdarray#19152438
-// Allows for properly printing an array object
-template <class T, std::size_t N>
-ostream& operator<<(ostream& o, const array<T, N>& arr)
-{
-    copy(arr.cbegin(), arr.cend(), ostream_iterator<T>(o, " "));
-    return o;
-}
