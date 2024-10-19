@@ -17,6 +17,8 @@ using namespace std;
 #define NIBBLE_3(b) HI_NIBBLE(LO_BYTE(b)) // Gets the third nibble of a uint16_t
 #define NIBBLE_4(b) LO_NIBBLE(LO_BYTE(b)) // Gets the last nibble of a uint16_t (least significant)
 
+#define C8_ADDRESS(b) ( NIBBLE_2(b) * 0x100) + LO_BYTE(b) // Basically just removes the most significant nibble from a hex number
+
 /*
 	Bitmask Values
 	Ordered from most to least significant bit

@@ -129,12 +129,12 @@ void C8Emu::execute()
 			break;
 		
 		case 0x1: // Jump to instruction
-			pc = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			pc = C8_ADDRESS(instr);
 			break;
 		
 		case 0x2: // Call subroutine
 			stack.push(pc);
-			pc = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			pc = C8_ADDRESS(instr);
 			break;
 		
 		case 0x3: // Skip next opcode if vX == NN
@@ -222,7 +222,7 @@ void C8Emu::execute()
 			break;
 		
 		case 0xA: // Set index register to value
-			I = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			I = C8_ADDRESS(instr);
 			break;
 		
 		case 0xB:
