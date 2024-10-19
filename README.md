@@ -38,7 +38,7 @@ Currently the emulator can't run *all* ROMs yet, but once the core emulator is f
 - [ ] Pass all [emulator tests](https://github.com/Timendus/chip8-test-suite) (Just CHIP-8)
 	- [x] CHIP-8 splash screen
 	- [x] IBM Logo
-	- [ ] Corax+ opcode test
+	- [x] Corax+ opcode test
 	- [ ] Flags test
 	- [ ] Quirks test
 	- [ ] Keypad test

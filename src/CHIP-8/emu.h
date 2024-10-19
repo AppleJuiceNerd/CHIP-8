@@ -1,9 +1,8 @@
 #include <array>
-#include <cstdint>
+#include <stack>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "../ROM.h"
-#include "SFML/Graphics/RectangleShape.hpp"
 
 using namespace std;
 
@@ -39,9 +38,9 @@ class C8Emu
 		array<array<bool, 64>, 32> displayBuffer = {false}; // Display Buffer (64x32)
 		vector<sf::RectangleShape> pixels = {}; // Drawable Pixels
 		uint16_t I; // Index Register
-		array<uint16_t, 50> stack; // Stack
+		stack<uint16_t> stack; // Stack
 		unsigned char delayTimer; // Delay Timer
-		unsigned char soundTimer; // Delay Timer
+		unsigned char soundTimer; // Sound Timer
 		
 		// General Purpose Variable Registers (V0-VF)
 		// Instead of 16 variables, I have opted to use an array, for readability and simplicity

@@ -11,8 +11,8 @@ C8Emu::C8Emu()
 	insertMem(defaultFont, 0);
 
 	pc = 0x200;
-	bgColor = sf::Color::Blue;
-	pixelColor = sf::Color::White;
+	bgColor = sf::Color(0x92'68'1A'FF);
+	pixelColor = sf::Color(0xF6'CE'3A'FF);
 
 	
 }
@@ -107,7 +107,7 @@ void C8Emu::fetch()
 	instr = (mem[pc] * 0x100) + mem[pc + 1];
 
 	// If the emulator isn't done reading instructions, keep incrementing the program counter
-	if (pc < 0xFFF) { pc += 2; }
+	if (pc < 4096) { pc += 2; }
 	
 }
 
@@ -120,11 +120,33 @@ void C8Emu::execute()
 				case 0xE0: // Clear screen
 					displayBuffer[31][63] = {false};
 					break;
+				
+				case 0xEE: // Return from subroutine
+					pc = stack.top();
+					stack.pop();
+					break;
 			}
 			break;
 		
 		case 0x1: // Jump to instruction
 			pc = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			break;
+		
+		case 0x2: // Call subroutine
+			stack.push(pc);
+			pc = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			break;
+		
+		case 0x3: // Skip next opcode if vX == NN
+			if (V[NIBBLE_2(instr)] == LO_BYTE(instr)) { pc += 2; }
+			break;
+		
+		case 0x4: // Skip next opcode if vX != NN
+			if (V[NIBBLE_2(instr)] != LO_BYTE(instr)) { pc += 2; }
+			break;
+		
+		case 0x5: // Skip next opcode if vX == vY
+			if (V[NIBBLE_2(instr)] == V[NIBBLE_3(instr)]) { pc += 2; }
 			break;
 		
 		case 0x6: // Set register to value
@@ -135,8 +157,76 @@ void C8Emu::execute()
 			V[NIBBLE_2(instr)] += LO_BYTE(instr);
 			break;
 		
+		case 0x8: // Logical and Arithmetic Instructions
+			switch (NIBBLE_4(instr)) {
+				case 0x0: // Set vX to vY
+					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)]; 
+					break;
+				
+				case 0x1: // Bitwise OR
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] | V[NIBBLE_3(instr)];
+					break;
+				
+				case 0x2: // Bitwise AND
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] & V[NIBBLE_3(instr)];
+					break;
+				
+				case 0x3: // Bitwise XOR
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] ^ V[NIBBLE_3(instr)];
+					break;
+				
+				case 0x4: // Add with carry
+					if (V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)] > 0xFF) {
+						V[0xF] = 1;
+					} else {	
+						V[0xF] = 0;
+					}
+
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)];
+					break;
+				
+				case 0x5: // Set vX to vX - vY
+					V[0xF] = 1;
+					if (V[NIBBLE_2(instr)] < V[NIBBLE_3(instr)]) {
+						V[0xF] = 0;
+					}
+
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] - V[NIBBLE_3(instr)];
+					break;
+				
+				case 0x6: // Right Shift
+					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)];
+					V[0xF] = V[NIBBLE_2(instr)] & bitmask[7];
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] >> 1;
+					break;
+				
+				case 0x7: // Set vX to vY - vY
+					V[0xF] = 1;
+					if (V[NIBBLE_3(instr)] < V[NIBBLE_2(instr)]) {
+						V[0xF] = 0;
+					}
+					
+					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)] - V[NIBBLE_2(instr)];
+					break;
+				
+				case 0xE: // Right Shift
+					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)];
+					V[0xF] = V[NIBBLE_2(instr)] & bitmask[0];
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] << 1;
+					break;
+			}
+			break;
+		
+		case 0x9: // Skip next opcode if vX != vY
+			if (V[NIBBLE_2(instr)] != V[NIBBLE_3(instr)]) { pc += 2; }
+			break;
+		
 		case 0xA: // Set index register to value
 			I = ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr);
+			break;
+		
+		case 0xB:
+			pc = ( ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr) ) + V[0x0];
 			break;
 		
 		case 0xD: // Draw sprite at x and y determined by the values of two registers, plus height and location
@@ -147,11 +237,36 @@ void C8Emu::execute()
 				I
 			);
 			break;
+		
+		case 0xF: // Miscellaneous opcodes because wtf even is organization
+			switch (LO_BYTE(instr)) {
+				case 0x1E: // Add value to Index (Original behavior, No carry)
+					I += V[NIBBLE_2(instr)];
+					break;
+				
+				case 0x33: // Binary-Coded Decimal Conversion
+					mem[I] = ( V[NIBBLE_2(instr)] / 100 ) % 10;
+					mem[I + 1] = ( V[NIBBLE_2(instr)] / 10 ) % 10;
+					mem[I + 2] = V[NIBBLE_2(instr)] % 10;
+					break;
+				
+				case 0x55: // Save register values to memory
+					for (int i = 0; i < NIBBLE_2(instr) + 1; i++) {
+						mem[I + i] = V[i]; // TODO: Make this a bit more readable
+					}
+					break;
+				
+				case 0x65: // Load register values from memory
+					for (int i = 0; i < NIBBLE_2(instr) + 1; i++) {
+						V[i] = mem[I + i] ; // TODO: Also make this a bit more readable
+					}
+					break;
+			}
+			break;
 
 		default: // Not all instructions are implemented.
 			cout << hex << instr << " unimplemented." << endl;
-			break;
-			
+			break;	
 	}
 }
 
