@@ -14,8 +14,8 @@ If you're using an operating system not listed here or you want to build this fo
 ## Building
 You should be able to get away with cloning the project and running `cmake --build` in the project directory:
 ```bash
-git clone repo
-cd repo
+git clone https://github.com/AppleJuiceNerd/CHIPPIE.git
+cd CHIPPIE
 cmake -B build
 cmake --build build
 ```
