@@ -31,5 +31,5 @@ const array<std::uint8_t, 8> bitmask = {
 	0b0000'1000, // represents bit 3
 	0b0000'0100, // represents bit 2
 	0b0000'0010, // represents bit 1
-	0b0000'0001  // represents bit 1
+	0b0000'0001  // represents bit 0
 };
