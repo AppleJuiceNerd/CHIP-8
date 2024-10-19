@@ -115,7 +115,7 @@ void C8Emu::fetch()
 void C8Emu::execute()
 {
 	switch ( NIBBLE_1(instr) ) {
-		case 0x0:
+		case 0x0: // Clear or Return
 			switch( LO_BYTE(instr) ) {
 				case 0xE0: // Clear screen
 					displayBuffer[31][63] = {false};
@@ -225,8 +225,8 @@ void C8Emu::execute()
 			I = C8_ADDRESS(instr);
 			break;
 		
-		case 0xB:
-			pc = ( ( NIBBLE_2(instr) * 0x100 ) + LO_BYTE(instr) ) + V[0x0];
+		case 0xB: // Jump to address with an offset of vX
+			pc = C8_ADDRESS(instr) + V[0x0];
 			break;
 		
 		case 0xD: // Draw sprite at x and y determined by the values of two registers, plus height and location
