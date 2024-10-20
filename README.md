@@ -39,11 +39,10 @@ Currently the emulator can't run *all* ROMs yet, but once the core emulator is f
 	- [x] CHIP-8 splash screen
 	- [x] IBM Logo
 	- [x] Corax+ opcode test
-	- [ ] Flags test
+	- [x] Flags test
 	- [ ] Quirks test
 	- [ ] Keypad test
 	- [ ] Beep test
-	- [ ] Scrolling test
 - [ ] SUPER-CHIP Support
 	- [ ] Pass quirks test
 	- [ ] Pass scrolling test

@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include "../utils.h"
 #include "emu.h"
@@ -114,6 +115,10 @@ void C8Emu::fetch()
 
 void C8Emu::execute()
 {
+	// Temporary variables for the carry instructions (is there a cleaner way to do this?)
+	int op1;
+	int op2;
+
 	switch ( NIBBLE_1(instr) ) {
 		case 0x0: // Clear or Return
 			switch( LO_BYTE(instr) ) {
@@ -176,43 +181,57 @@ void C8Emu::execute()
 					break;
 				
 				case 0x4: // Add with carry
-					if (V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)] > 0xFF) {
+					op1 = V[NIBBLE_2(instr)];
+					op2 = V[NIBBLE_3(instr)];
+					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)];
+
+					if (op1 + op1 > 0xFF) {
 						V[0xF] = 1;
 					} else {	
 						V[0xF] = 0;
 					}
-
-					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)];
 					break;
 				
 				case 0x5: // Set vX to vX - vY
-					V[0xF] = 1;
-					if (V[NIBBLE_2(instr)] < V[NIBBLE_3(instr)]) {
-						V[0xF] = 0;
-					}
+					op1 = V[NIBBLE_2(instr)];
+					op2 = V[NIBBLE_3(instr)];
 
 					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] - V[NIBBLE_3(instr)];
+					
+					V[0xF] = 1;
+					if (op1 < op2) {
+						V[0xF] = 0;
+					}
 					break;
 				
 				case 0x6: // Right Shift
+					op2 = V[NIBBLE_3(instr)];
+
 					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)];
-					V[0xF] = V[NIBBLE_2(instr)] & bitmask[7];
 					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] >> 1;
+
+					V[0xF] = op2 & bitmask[7];
 					break;
 				
 				case 0x7: // Set vX to vY - vY
-					V[0xF] = 1;
-					if (V[NIBBLE_3(instr)] < V[NIBBLE_2(instr)]) {
-						V[0xF] = 0;
-					}
+					op1 = V[NIBBLE_2(instr)];
+					op2 = V[NIBBLE_3(instr)];
 					
 					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)] - V[NIBBLE_2(instr)];
+
+					V[0xF] = 1;
+					if (op2 < op1) {
+						V[0xF] = 0;
+					}
 					break;
 				
 				case 0xE: // Right Shift
+					op2 = V[NIBBLE_3(instr)];
+
 					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)];
-					V[0xF] = V[NIBBLE_2(instr)] & bitmask[0];
 					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] << 1;
+
+					V[0xF] = ( op2 & bitmask[0] ) / bitmask[0];
 					break;
 			}
 			break;
