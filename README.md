@@ -7,7 +7,7 @@ CHIPPIE is yet another CHIP-8 emulator that I work on in my free time. It's writ
 
 ## Installation
 
-If the automatic build script works (NONEXISTANT), there should be builds in releases. I only have access to Windows and Linux systems, so if something somehow happens with MacOS or even the two platforms I do test, make an issue and I'll try and fix the problem.
+If the automatic build script works (NONEXISTENT), there should be builds in releases. I only have access to Windows and Linux systems, so if something somehow happens with MacOS or even the two platforms I do test, make an issue and I'll try and fix the problem.
 
 If you're using an operating system not listed here or you want to build this for your OS's distribution package manager, you can always [build the project](#building).
 
@@ -75,4 +75,4 @@ Contributions are more than  welcome! Just keep a few things in mind:
 
 ## License
 
-This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html). See LICENSE.
+This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html). See [LICENSE](/LICENSE).
