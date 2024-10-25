@@ -185,7 +185,7 @@ void C8Emu::execute()
 					op2 = V[NIBBLE_3(instr)];
 					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)];
 
-					if (op1 + op1 > 0xFF) {
+					if (op1 + op2 > 0xFF) {
 						V[0xF] = 1;
 					} else {	
 						V[0xF] = 0;
