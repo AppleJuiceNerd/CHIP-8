@@ -78,16 +78,18 @@ Contributions are more than  welcome! Just keep a few things in mind:
 
 ## Credits
 
-- [chip-8-test-suite](https://github.com/Timendus/chip8-test-suite) by [Timendus](https://github.com/Timendus)
-  - This is what I've used to test how the emulator functions and it seems to work great!
-- [CHIP-8 Research Facility](https://chip-8.github.io/) by [tobiasvl](https://github.com/tobiasvl)
-  - This was made for the purpose of gathering useful sources information about CHIP-8 in one place. I highly recommend it if you also want to make a CHIP-8 emulator.
-- [SFML](https://www.sfml-dev.org/) and their [CMake Project Template](https://github.com/SFML/cmake-sfml-project)
-  - This is what was used to get the project up and running very quickly.
-- [cplusplus.com](https://cplusplus.com)  tutorials
-  - An invaluable resource to me to discover and learn how standard C++ objects work.
-- [Wikipedia](https://www.wikipedia.org/) for the [nibble macros](https://en.wikipedia.org/wiki/Nibble#Extracting_a_nibble_from_a_byte)
-  - I needed a way to extract nibbles, and the code was just there. And it WORKS. How could I *not* use it?? (this is borrowing I thinks)
+- CHIP-8 Resources
+  - [chip-8-test-suite](https://github.com/Timendus/chip8-test-suite) by [Timendus](https://github.com/Timendus)
+    - This is what I've used to test how the emulator functions and it seems to work great!
+  - [CHIP-8 Research Facility](https://chip-8.github.io/) by [tobiasvl](https://github.com/tobiasvl)
+    - This was made for the purpose of gathering useful sources information about CHIP-8 in one place. I highly recommend it if you also want to make a CHIP-8 emulator.
+- C++ Resources
+  - [SFML](https://www.sfml-dev.org/) and their [CMake Project Template](https://github.com/SFML/cmake-sfml-project)
+    - This is what was used to get the project up and running very quickly.
+  - [cplusplus.com](https://cplusplus.com)  tutorials
+    - An invaluable resource to me to discover and learn how standard C++ objects work.
+  - [Wikipedia](https://www.wikipedia.org/) for the [nibble macros](https://en.wikipedia.org/wiki/Nibble#Extracting_a_nibble_from_a_byte)
+    - I needed a way to extract nibbles, and the code was just there. And it WORKS. How could I *not* use it?? (this is borrowing I thinks)
 
 ## License
 
