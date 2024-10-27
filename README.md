@@ -7,9 +7,11 @@ CHIPPIE is yet another CHIP-8 emulator that I work on in my free time. It's writ
 
 ## Installation
 
-If the automatic build script works (NONEXISTENT), there should be builds in releases. I only have access to Windows and Linux systems, so if something somehow happens with MacOS or even the two platforms I do test, make an issue and I'll try and fix the problem.
+~~If the automatic build script works, there should be builds in releases.~~ **There is no build script yet.**
 
-If you're using an operating system not listed here or you want to build this for your OS's distribution package manager, you can always [build the project](#building).
+I only have access to Windows and Linux systems, so if something somehow happens with MacOS or even the two platforms I do test, make an issue and I'll try and fix the problem.
+
+If you're using an operating system not listed here or you want this to work with your OS's distribution package manager, you can always [build the project](#building).
 
 ## Building
 You should be able to get away with cloning the project and running `cmake --build` in the project directory:
@@ -18,6 +20,22 @@ git clone https://github.com/AppleJuiceNerd/CHIPPIE.git
 cd CHIPPIE
 cmake -B build
 cmake --build build
+```
+
+There are dependencies on Linux that need to be installed beforehand in order to successfully build the project. Here's how to install these for Debian-based distributions:
+```bash
+sudo apt update
+sudo apt install \
+    libxrandr-dev \
+    libxcursor-dev \
+    libudev-dev \
+    libopenal-dev \
+    libflac-dev \
+    libvorbis-dev \
+    libgl1-mesa-dev \
+    libegl1-mesa-dev \
+    libdrm-dev \
+    libgbm-dev
 ```
 
 If this doesn't work, make an issue and I'll try and figure it out.
