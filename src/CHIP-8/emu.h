@@ -73,13 +73,55 @@ class C8Emu
 		// Creates an SFML Rectangle at (x, y) in screen space
 		void createRectangle(int x, int y);
 
-
+		
+		/////////////////////////
 		// Emulation Functions //
+		/////////////////////////
+
 		// These should make emulation functions a bit more readable
 
+		// Clears the screen
+		void clear();
+
+		// Jumps to instruction
+		void jump(uint16_t memLocation);
+
+		// Adds two values and stores the result in V[reg1]
+		// If CARRY is true, check for overflow
+		// If not, add without checking
+		void add(uint16_t reg1, uint16_t reg2, bool CARRY);
+
+		// Subtracts two values and stores the result in V[reg1]
+		// If SWAP is true, evaluate V[reg2] - V[reg1] instead of V[reg1] - V[reg2]
+		// If CARRY is true, check for underflow
+		// If not, subtract without checking
+		void subtract(uint16_t reg1, uint16_t reg2, bool SWAP, bool CARRY);
+		
+		// Execute subroutine
+		void call(uint16_t memLocation);
+
+		// Exits a subroutine
+		void exitSubroutine();
+
+		// TODO: Should there be a setRegister function?
+
+		// Skip next opcode if val1 == val2
+		// If NOT is true, do val1 != val2
+		void compareSkip(uint16_t val1, uint16_t val2, bool NOT);
 
 		// Draws a sprite at (drawX, drawY), also taking the sprite height and memory location as arguments
-		void drawSprite(uint16_t drawX, uint16_t drawY, uint16_t spriteHeight, uint16_t memLocation);
+		void drawSprite(uint16_t drawX, uint16_t drawY, uint16_t height, uint16_t memLocation);
+
+		// Performs a Binary-Coded Decimal conversion
+		void BCD(uint16_t number);
+
+		// TODO: Could I have explained these (save & load) functions better?
+
+		// Save register values from registers V0 to specified register
+		void save(unsigned char tailRegNum);
+
+		// Load values into registers from registers V0 to specified register
+		void load(unsigned char tailRegNum);
 
 
 		/////////////////////////////////

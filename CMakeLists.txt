@@ -16,6 +16,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(main
     src/main.cpp
     src/CHIP-8/emu.cpp
+    src/CHIP-8/instructions.cpp
     src/ROM.cpp
 )
 target_link_libraries(main PRIVATE sfml-graphics)

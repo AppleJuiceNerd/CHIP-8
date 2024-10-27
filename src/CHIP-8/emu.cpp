@@ -1,5 +1,3 @@
-#include <cstdint>
-#include <cstdlib>
 #include <iostream>
 #include "../utils.h"
 #include "emu.h"
@@ -53,51 +51,6 @@ void C8Emu::createRectangle(int x, int y)
 }
 
 
-///////////////////////////////
-//    Emulation Functions    //
-///////////////////////////////
-
-void C8Emu::drawSprite(uint16_t drawX, uint16_t drawY, uint16_t spriteHeight, uint16_t memLocation)
-{
-	// Variable initializations
-	// TODO: Grab these values straight from the registers
-	int x = drawX;
-	int y = drawY;
-	int h = spriteHeight;
-	int memLoc = memLocation;
-	unsigned char data;
-
-	// Make sure that where the sprite starts drawing is in the screen
-	x %= 64;
-	y %= 32;
-
-	// Set VF to 0
-	V[0xF] = 0;
-
-	// Loop through each row in the sprite
-	for(int row = 0; row < h; row++) {
-		// Grab a byte from where it is needed
-		data = mem[memLoc];
-		
-		// Loop through each bit in the selected byte
-		for(int line = 0; line < 8; line++)
-		{
-			// If the bit is to be drawn, draw it
-			if (bitmask[line] & data)
-			{
-				drawAt(line + x, row + y);
-			}
-			
-		}
-
-		// Look to the next byte for more sprite data
-		memLoc++;
-	}
-	
-	
-}
-
-
 ////////////////////////////////////
 //    Emulation Loop Functions    //
 ////////////////////////////////////
@@ -123,35 +76,33 @@ void C8Emu::execute()
 		case 0x0: // Clear or Return
 			switch( LO_BYTE(instr) ) {
 				case 0xE0: // Clear screen
-					displayBuffer[31][63] = {false};
+					clear();
 					break;
 				
 				case 0xEE: // Return from subroutine
-					pc = stack.top();
-					stack.pop();
+					exitSubroutine();
 					break;
 			}
 			break;
 		
 		case 0x1: // Jump to instruction
-			pc = C8_ADDRESS(instr);
+			jump(C8_ADDRESS(instr));
 			break;
 		
 		case 0x2: // Call subroutine
-			stack.push(pc);
-			pc = C8_ADDRESS(instr);
+			call(C8_ADDRESS(instr));
 			break;
 		
 		case 0x3: // Skip next opcode if vX == NN
-			if (V[NIBBLE_2(instr)] == LO_BYTE(instr)) { pc += 2; }
+			compareSkip(V[NIBBLE_2(instr)], LO_BYTE(instr), false);
 			break;
 		
 		case 0x4: // Skip next opcode if vX != NN
-			if (V[NIBBLE_2(instr)] != LO_BYTE(instr)) { pc += 2; }
+			compareSkip(V[NIBBLE_2(instr)], LO_BYTE(instr), true);
 			break;
 		
 		case 0x5: // Skip next opcode if vX == vY
-			if (V[NIBBLE_2(instr)] == V[NIBBLE_3(instr)]) { pc += 2; }
+			compareSkip(V[NIBBLE_2(instr)], V[NIBBLE_3(instr)], false);
 			break;
 		
 		case 0x6: // Set register to value
@@ -181,27 +132,11 @@ void C8Emu::execute()
 					break;
 				
 				case 0x4: // Add with carry
-					op1 = V[NIBBLE_2(instr)];
-					op2 = V[NIBBLE_3(instr)];
-					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] + V[NIBBLE_3(instr)];
-
-					if (op1 + op2 > 0xFF) {
-						V[0xF] = 1;
-					} else {	
-						V[0xF] = 0;
-					}
+					add(NIBBLE_2(instr), NIBBLE_3(instr), true);
 					break;
 				
 				case 0x5: // Set vX to vX - vY
-					op1 = V[NIBBLE_2(instr)];
-					op2 = V[NIBBLE_3(instr)];
-
-					V[NIBBLE_2(instr)] = V[NIBBLE_2(instr)] - V[NIBBLE_3(instr)];
-					
-					V[0xF] = 1;
-					if (op1 < op2) {
-						V[0xF] = 0;
-					}
+					subtract(NIBBLE_2(instr), NIBBLE_3(instr), false, true);
 					break;
 				
 				case 0x6: // Right Shift
@@ -213,16 +148,8 @@ void C8Emu::execute()
 					V[0xF] = op2 & bitmask[7];
 					break;
 				
-				case 0x7: // Set vX to vY - vY
-					op1 = V[NIBBLE_2(instr)];
-					op2 = V[NIBBLE_3(instr)];
-					
-					V[NIBBLE_2(instr)] = V[NIBBLE_3(instr)] - V[NIBBLE_2(instr)];
-
-					V[0xF] = 1;
-					if (op2 < op1) {
-						V[0xF] = 0;
-					}
+				case 0x7: // Set vX to vY - vX
+					subtract(NIBBLE_2(instr), NIBBLE_3(instr), true, true);
 					break;
 				
 				case 0xE: // Right Shift
@@ -237,7 +164,7 @@ void C8Emu::execute()
 			break;
 		
 		case 0x9: // Skip next opcode if vX != vY
-			if (V[NIBBLE_2(instr)] != V[NIBBLE_3(instr)]) { pc += 2; }
+			compareSkip(V[NIBBLE_2(instr)], V[NIBBLE_3(instr)], true);
 			break;
 		
 		case 0xA: // Set index register to value
@@ -264,28 +191,22 @@ void C8Emu::execute()
 					break;
 				
 				case 0x33: // Binary-Coded Decimal Conversion
-					mem[I] = ( V[NIBBLE_2(instr)] / 100 ) % 10;
-					mem[I + 1] = ( V[NIBBLE_2(instr)] / 10 ) % 10;
-					mem[I + 2] = V[NIBBLE_2(instr)] % 10;
+					BCD(V[NIBBLE_2(instr)]);
 					break;
 				
 				case 0x55: // Save register values to memory
-					for (int i = 0; i < NIBBLE_2(instr) + 1; i++) {
-						mem[I + i] = V[i]; // TODO: Make this a bit more readable
-					}
+					save(NIBBLE_2(instr));
 					break;
 				
 				case 0x65: // Load register values from memory
-					for (int i = 0; i < NIBBLE_2(instr) + 1; i++) {
-						V[i] = mem[I + i] ; // TODO: Also make this a bit more readable
-					}
+					load(NIBBLE_2(instr));
 					break;
 			}
 			break;
 
 		default: // Not all instructions are implemented.
 			cout << hex << instr << " unimplemented." << endl;
-			break;	
+			break;
 	}
 }
 
