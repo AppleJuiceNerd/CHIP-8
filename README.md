@@ -40,6 +40,8 @@ sudo apt install \
     libgbm-dev
 ```
 
+The names of these packages are different depending on the distribution and will be provided for convenience whenever I have the chance to look for everything (Maybe this could be a contribution?)
+
 If this doesn't work, make an issue and I'll try and figure it out.
 
 ## Usage
@@ -56,7 +58,7 @@ All one can do at the current moment is pass a rom into it through the first arg
 
 ## Roadmap
 
-Currently the emulator can't run *all* ROMs yet, but once the core emulator is finished, I have some plans relating to the finished product of this application as a whole. These items are in not necessarily chronologically ordered.
+Currently the emulator can't run *all* ROMs yet, but once the core emulator is finished, I have some plans relating to the finished product of this application as a whole. These items are not necessarily chronologically ordered.
 
 - [ ] Pass all [emulator tests](https://github.com/Timendus/chip8-test-suite) (Just CHIP-8)
 - [ ] SUPER-CHIP Support
