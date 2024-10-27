@@ -51,24 +51,15 @@ All one can do at the current moment is pass a rom into it through the first arg
 [Not everything works yet, though.](#roadmap)
 
 ## Roadmap
-Currently the emulator can't run *all* ROMs yet, but once the core emulator is finished, I have some plans relating to the finished product of this application as a whole.
+Currently the emulator can't run *all* ROMs yet, but once the core emulator is finished, I have some plans relating to the finished product of this application as a whole. These items are in not necessarily chronologically ordered.
 
 - [ ] Pass all [emulator tests](https://github.com/Timendus/chip8-test-suite) (Just CHIP-8)
-	- [x] CHIP-8 splash screen
-	- [x] IBM Logo
-	- [x] Corax+ opcode test
-	- [x] Flags test
-	- [ ] Quirks test
-	- [ ] Keypad test
-	- [ ] Beep test
 - [ ] SUPER-CHIP Support
-	- [ ] Pass quirks test
-	- [ ] Pass scrolling test
 - [ ] XO-CHIP Support
-	- [ ] Pass quirks test
-	- [ ] Pass scrolling test
-- [ ] Debugging Features (C8 Developer Tools)
-- [ ] ROM Browser (For quickly downloading and playing ROMs)
+- [ ] Debugging Features
+- [ ] ROM Browser
+
+For more info on the more specific details of planned features, check out [TODO.md](/TODO.md)
 
 
 ## Contributing
