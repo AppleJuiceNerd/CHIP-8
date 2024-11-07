@@ -88,6 +88,10 @@ Contributions are more than  welcome! Just keep a few things in mind:
     - This is what was used to get the project up and running very quickly.
   - [cplusplus.com](https://cplusplus.com)  tutorials
     - An invaluable resource to me to discover and learn how standard C++ objects work.
+  - [cppreference.com](https://cppreference.com) documentation-style references
+    - Helped in the same ways cplusplus.com did.
+  - [www.learncpp.com](https://www.learncpp.com) tutorials
+    - An important resource to me for learning general C++ concepts.
   - [Wikipedia](https://www.wikipedia.org/) for the [nibble macros](https://en.wikipedia.org/wiki/Nibble#Extracting_a_nibble_from_a_byte)
     - I needed a way to extract nibbles, and the code was just there. And it WORKS. How could I *not* use it?? (this is borrowing I thinks)
 
