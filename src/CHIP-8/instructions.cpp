@@ -74,7 +74,7 @@ void C8Emu::subtract(uint16_t reg1, uint16_t reg2, bool SWAP, bool CARRY)
 void C8Emu::call(uint16_t memLocation)
 {	
 	// Push the current location of the program counter into the stack...
-	stack.push(pc);
+	callStack.push(pc);
 
 	// ...and jump to the specified memory location
 	jump(memLocation);
@@ -83,10 +83,10 @@ void C8Emu::call(uint16_t memLocation)
 void C8Emu::exitSubroutine()
 {
 	// Jump to the location stored at the top of the stack...
-	jump(stack.top());
+	jump(callStack.top());
 
 	// ...and pop this location from the stack
-	stack.pop();
+	callStack.pop();
 }
 
 void C8Emu::compareSkip(uint16_t val1, uint16_t val2, bool NOT)
