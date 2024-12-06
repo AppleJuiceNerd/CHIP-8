@@ -1,4 +1,3 @@
-#include <iostream>
 #include <array>
 
 using namespace std;
@@ -17,13 +16,13 @@ using namespace std;
 #define NIBBLE_3(b) HI_NIBBLE(LO_BYTE(b)) // Gets the third nibble of a uint16_t
 #define NIBBLE_4(b) LO_NIBBLE(LO_BYTE(b)) // Gets the last nibble of a uint16_t (least significant)
 
-#define C8_ADDRESS(b) ( NIBBLE_2(b) * 0x100) + LO_BYTE(b) // Basically just removes the most significant nibble from a hex number
+#define C8_ADDRESS(b) ( NIBBLE_2(b) * 0x100) + LO_BYTE(b) // Removes the most significant nibble from a 4 digit hex number
 
 /*
 	Bitmask Values
 	Ordered from most to least significant bit
 */
-const array<std::uint8_t, 8> bitmask = {
+const array<unsigned char, 8> bitmask = {
 	0b1000'0000, // represents bit 7
 	0b0100'0000, // represents bit 6
 	0b0010'0000, // represents bit 5
