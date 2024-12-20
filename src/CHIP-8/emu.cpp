@@ -45,7 +45,7 @@ void C8Emu::drawAt(int x, int y)
 
 void C8Emu::createRectangle(int x, int y)
 {
-	pixels.push_back( sf::RectangleShape(sf::Vector2f(resMul,resMul)) );
+	pixels.push_back(sf::RectangleShape(sf::Vector2f(resMul,resMul)) );
 	pixels.back().setFillColor(pixelColor);
 	pixels.back().setPosition(sf::Vector2f(x * resMul, y * resMul));
 }
