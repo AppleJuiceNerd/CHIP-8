@@ -1,5 +1,3 @@
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
 #include <array>
 #include <stack>
 #include <vector>
@@ -29,6 +27,27 @@ const array<unsigned char, 80> defaultFont = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
+// TODO: Make these work with scancodes
+// Default Bindings to the 16 keys on the keypad
+const array<sf::Keyboard::Key, 16> defaultKeypad = {
+	sf::Keyboard::Key::Num1,
+	sf::Keyboard::Key::Num2,
+	sf::Keyboard::Key::Num3,
+	sf::Keyboard::Key::Num4,
+	sf::Keyboard::Key::Q,
+	sf::Keyboard::Key::W,
+	sf::Keyboard::Key::E,
+	sf::Keyboard::Key::R,
+	sf::Keyboard::Key::A,
+	sf::Keyboard::Key::S,
+	sf::Keyboard::Key::D,
+	sf::Keyboard::Key::F,
+	sf::Keyboard::Key::Z,
+	sf::Keyboard::Key::X,
+	sf::Keyboard::Key::C,
+	sf::Keyboard::Key::V
+};
+
 
 // Chip-8 emulator
 class C8Emu
@@ -43,6 +62,8 @@ class C8Emu
 		stack<uint16_t> callStack; // Stack
 		unsigned char delayTimer; // Delay Timer
 		unsigned char soundTimer; // Sound Timer
+
+		array<bool, 16> keypad; // Keypad key states
 		
 		// General Purpose Variable Registers (V0-VF)
 		// Instead of 16 variables, I have opted to use an array, for readability and simplicity

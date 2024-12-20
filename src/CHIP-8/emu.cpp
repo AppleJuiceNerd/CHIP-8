@@ -1,5 +1,3 @@
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include "../utils.h"
 #include "emu.h"
