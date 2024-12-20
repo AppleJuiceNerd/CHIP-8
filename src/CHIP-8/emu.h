@@ -1,3 +1,5 @@
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <array>
 #include <stack>
 #include <vector>
@@ -72,6 +74,9 @@ class C8Emu
 
 		// Creates an SFML Rectangle at (x, y) in screen space
 		void createRectangle(int x, int y);
+
+		// Handles Keypresses
+		void keyHandler();
 
 		
 		/////////////////////////
