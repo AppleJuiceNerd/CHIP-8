@@ -1,7 +1,7 @@
-#include <iostream>
 #include <array>
 
 using namespace std;
+
 
 // Byte Manipulation Macro Functions (or BMMF if you want to sound cool and mysterious)
 // Thanks Wikipedia (Idk how macros work)
@@ -23,7 +23,7 @@ using namespace std;
 	Bitmask Values
 	Ordered from most to least significant bit
 */
-const array<std::uint8_t, 8> bitmask = {
+const array<unsigned char, 8> bitmask = {
 	0b1000'0000, // represents bit 7
 	0b0100'0000, // represents bit 6
 	0b0010'0000, // represents bit 5
