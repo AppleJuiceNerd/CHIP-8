@@ -45,9 +45,16 @@ void C8Emu::drawAt(int x, int y)
 
 void C8Emu::createRectangle(int x, int y)
 {
-	pixels.push_back( sf::RectangleShape(sf::Vector2f(resMul,resMul)) );
+	pixels.push_back(sf::RectangleShape(sf::Vector2f(resMul,resMul)) );
 	pixels.back().setFillColor(pixelColor);
 	pixels.back().setPosition(sf::Vector2f(x * resMul, y * resMul));
+}
+
+void C8Emu::keyHandler()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
+		cout << "1" << endl;
+	}
 }
 
 
@@ -246,8 +253,12 @@ void C8Emu::runRom(array<unsigned char, N> rom)
 		// Obligatory event checking
 		sf::Event event;
 		while (window.pollEvent(event)) {
+			// Obligatory "if x button, stop"
 			if (event.type == sf::Event::Closed) { window.close(); }
 		}
+
+		// Handle Keypresses
+		keyHandler();
 
 		// Fetch and execute instructions
 		fetch();
@@ -258,7 +269,7 @@ void C8Emu::runRom(array<unsigned char, N> rom)
 
 		// Draw buffered pixels
 		drawBuffer();
-
+		
 		// Update display
 		window.display();
 

@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 // Byte Manipulation Macro Functions (or BMMF if you want to sound cool and mysterious)
 // Thanks Wikipedia (Idk how macros work)
 #define HI_NIBBLE(b) (((b) >> 4) & 0x0F) // Gets the most significant nibble of a byte
